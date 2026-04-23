@@ -1,13 +1,13 @@
 """
-CasioWatchApp - Versión Final "Al Máximo".
-Soporta interacción con ratón y teclado, y gestión de temas con Listas Circulares Dobles.
+CasioWatchApp - Versión Realista.
+Sincronización total entre el backend de tiempo y el frontend analógico/digital.
 """
 
 import sys
 import os
 import tkinter as tk
+from datetime import datetime
 
-# Configuración de rutas
 _root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(_root, "backend", "backend"))
 
@@ -33,7 +33,7 @@ class CasioWatchApp:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title(CasioTheme.WINDOW_TITLE)
-        self.root.geometry(f"{CasioTheme.WINDOW_WIDTH}x{CasioTheme.WINDOW_HEIGHT}")
+        self.root.geometry("550x800")
         self.root.configure(bg="#010305")
         self.root.resizable(False, False)
 
@@ -61,22 +61,22 @@ class CasioWatchApp:
         for v in ["clock", "alarm", "stopwatch", "timer"]:
             self.mode_selector.append(self.views[v])
 
+        self._last_theme = None
+        self._last_day = None
+        
         self.setup_ui()
         self.bind_controls()
         self.run_loop()
 
     def setup_ui(self):
         self.canvas.delete("all")
-        # Fondo y Caja
         self.canvas.create_rectangle(0, 0, 550, 800, fill="#1a0f00", outline="")
         for i in range(0, 800, 4):
             c = f"#{20+(i%40)//4:02x}{12+(i%40)//4:02x}00"
             self.canvas.create_line(0, i, 550, i, fill=c)
-        
         self.frame.draw_watch_body()
 
     def bind_controls(self):
-        # Teclado
         self.root.bind("<Return>", lambda e: self.next_mode())
         self.root.bind("<BackSpace>", lambda e: self.prev_mode())
         self.root.bind("<t>", lambda e: self.change_theme())
@@ -84,8 +84,7 @@ class CasioWatchApp:
         self.root.bind("<r>", lambda e: self.current_view().on_reset())
         self.root.bind("<a>", lambda e: self.current_view().on_adjust())
         self.root.bind("<l>", lambda e: self.toggle_light())
-
-        # Ratón (Interacción con los pulsadores físicos)
+        
         self.canvas.tag_bind("MODE", "<Button-1>", lambda e: self.next_mode())
         self.canvas.tag_bind("ADJUST", "<Button-1>", lambda e: self.current_view().on_adjust())
         self.canvas.tag_bind("LIGHT", "<Button-1>", lambda e: self.toggle_light())
@@ -95,8 +94,8 @@ class CasioWatchApp:
         return self.mode_selector.get_current()
 
     def change_theme(self):
-        theme = self.theme_manager.next_theme()
-        self.lcd_display.clear("lcd_content")
+        self.theme_manager.next_theme()
+        self._last_theme = None
 
     def next_mode(self):
         self.mode_selector.next()
@@ -112,27 +111,37 @@ class CasioWatchApp:
     def run_loop(self):
         self.canvas.delete("dynamic")
         theme = self.theme_manager.get_current()
-        self.analog_display.draw_face_themed(theme)
-        
         active = self.current_view()
-        if isinstance(active, ClockView):
-            active.render()
-        else:
+        
+        # 1. Elementos estáticos
+        if self._last_theme != theme:
+            self.analog_display.draw_face_static(theme)
+            self._last_theme = theme
+            self.analog_display.draw_glass_effects()
+        
+        # 2. Tiempo real desde el sistema
+        now = datetime.now()
+        
+        # 3. Actualizar fecha
+        if self._last_day != now.day:
+            self.analog_display.draw_date_window(theme, now.day)
+            self._last_day = now.day
+
+        # 4. Renderizar Manecillas (Siempre activas en fondo o principal)
+        # Usamos los datos reales del sistema para evitar que "vaya rápido"
+        self.analog_display.draw_hands(theme, now.hour, now.minute, now.second)
+
+        # 5. Renderizar Vista (Si no es el reloj principal, dibujar LCD encima)
+        if not isinstance(active, ClockView):
             lx, ly = CasioTheme.LCD_X, CasioTheme.LCD_Y
             lw, lh = CasioTheme.LCD_WIDTH, CasioTheme.LCD_HEIGHT
             bg = theme.lcd_bg if not self.lcd_display._light_on else CasioTheme.LCD_BG_LIGHT
-            
-            # Dibujar LCD
             self.canvas.create_rectangle(lx, ly, lx+lw, ly+lh, fill=bg, outline=theme.accent, width=2, tags="dynamic")
-            
-            # Efecto Glow si la luz está ON
             if self.lcd_display._light_on:
-                self.canvas.create_rectangle(lx-5, ly-5, lx+lw+5, ly+lh+5, outline=theme.accent, width=1, tags="dynamic")
-
+                self.canvas.create_rectangle(lx-3, ly-3, lx+lw+3, ly+lh+3, outline=theme.accent, width=1, tags="dynamic")
             active.render()
 
-        self.analog_display.draw_glass_effects()
-        self.root.after(33, self.run_loop)
+        self.root.after(100, self.run_loop) # Reducimos frecuencia de actualización para estabilidad
 
     def run(self):
         self.root.mainloop()

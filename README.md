@@ -1,34 +1,44 @@
-# AETERNA - Haute Horlogerie (Edición Masterpiece)
+# AETERNA Masterpiece - Taller de Estructuras de Datos
 
 ## 💎 El Proyecto
-AETERNA es una simulación de alta fidelidad de un reloj de lujo de gran complicación, desarrollado íntegramente en **Python**. El proyecto ha evolucionado desde un concepto digital hasta convertirse en una pieza de ingeniería visual que emula los materiales y la mecánica de la alta relojería suiza.
+AETERNA es una simulación de alta fidelidad de un reloj de lujo que integra conceptos avanzados de programación y estructuras de datos. Esta versión ha sido desarrollada específicamente para el **Taller de Listas Circulares Dobles**, demostrando su utilidad práctica en sistemas de navegación de interfaces.
 
-## 🌟 Características Destacadas
-- **Diseño de Caja "Grand Royal":** Carcasa octogonal de acero quirúrgico pulido con tornillos de oro de 18k.
-- **Esfera Esmeralda Sunburst:** Dial dinámico que reacciona al tiempo con reflejos radiales de luz.
-- **Movimiento Skeleton:** Maquinaria interna (engranajes) animada que simula el corazón mecánico del reloj.
-- **Brazalete Integrado:** Sistema de eslabones metálicos detallados con acabados bitonales.
-- **Presentación de Lujo:** Fondo de madera de caoba (Mahogany) texturizado para un contexto de exhibición.
-- **Precisión Suiza:** Motor de tiempo sincronizado con el sistema y renderizado a 30 FPS para una fluidez total.
+## 🏗️ Innovaciones Técnicas (Requerimientos del Taller)
 
-## 🏗️ Arquitectura del Software
-El sistema está dividido en dos grandes bloques para garantizar la mantenibilidad y escalabilidad:
+### 1. Lista Circular Doblemente Enlazada (Modos)
+El sistema de navegación principal del reloj utiliza una **Lista Circular Doble**.
+- **Circularidad:** Permite ciclar infinitamente entre los modos (Reloj -> Alarma -> Crono -> Timer -> Reloj).
+- **Bidireccionalidad:** Gracias a los punteros `prev` y `next`, el usuario puede avanzar (`Enter`) o retroceder (`Backspace`) en los modos.
+- **Implementación:** Se encuentra en `backend/backend/models/circular_list.py`.
 
-### 1. Backend (`/backend`)
-Gestiona la "inteligencia" del reloj. 
-- **Modelos:** Clases puras de Python que calculan el tiempo, gestionan alarmas y estados internos sin depender de la interfaz gráfica.
+### 2. Selector de Temas Dinámicos (Funcionalidad Extra)
+Se implementó una **segunda Lista Circular Doble** para gestionar la personalización estética.
+- **Temas:** Esmeralda Real, Platino Ártico y Obsidiana.
+- **Uso:** Permite cambiar la paleta de colores completa en tiempo real sin perder el estado del reloj.
 
-### 2. Frontend (`/frontend`)
-Gestiona la "estética" y el renderizado.
-- **Configuración:** Sistema de temas centralizado para colores, fuentes y dimensiones.
-- **Componentes:** Clases especializadas en dibujo geométrico complejo (Trigonometría para manecillas y engranajes).
-- **Orquestador (`app.py`):** El motor principal que une la lógica con la visualización.
+## 🎨 Características del Frontend
+- **Renderizado Procedimental:** Dibujo dinámico de manecillas y esferas con `tkinter.Canvas`.
+- **Interacción Híbrida:** 
+    - **Teclado:** Control total mediante teclas rápidas.
+    - **Ratón (Pulsadores):** Interacción táctil con los botones físicos laterales del reloj.
+- **Movimiento de Cuarzo:** Sincronización precisa con el reloj del sistema.
 
-## 🚀 Ejecución Rápida
+## ⌨️ Controles de Usuario
+| Acción | Teclado | Ratón (Clic) |
+| :--- | :--- | :--- |
+| **Siguiente Modo** | `Enter` | Botón Inferior Izquierdo |
+| **Modo Anterior** | `Backspace` | - |
+| **Cambiar Tema** | `T` | - |
+| **Iniciar / Parar** | `Espacio` | Botón Inferior Derecho |
+| **Reiniciar (Reset)** | `R` | - |
+| **Ajustar (Adjust)** | `A` | Botón Superior Izquierdo |
+| **Luz (Light)** | `L` | Botón Superior Derecho |
+
+## 🚀 Ejecución
 ```bash
 cd frontend/frontend
-python app.py
+python main.py
 ```
 
 ---
-*Proyecto desarrollado para el Taller de Programación en Python - Abril 2026.*
+*Desarrollo Profesional - Taller de Programación Python - Abril 2026*
