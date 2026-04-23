@@ -37,3 +37,34 @@ class CasioTheme:
     FONT_BRAND = ("Garamond", 22, "bold")
     FONT_MODEL = ("Arial Narrow", 9, "bold")
     FONT_NUM = ("Century Gothic", 13, "bold")
+    
+    # --- LCD Constants (Digital Modes) ---
+    LCD_BG = "#7a8a7a"
+    LCD_BG_LIGHT = "#a0b0a0"
+    SEGMENT_ON = "#1a1a1a"
+    SEGMENT_ON_LIGHT = "#0a0a0a"
+    SEGMENT_OFF = "#6a7a6a"
+    
+    LCD_WIDTH = 260
+    LCD_HEIGHT = 160
+    LCD_X = (WINDOW_WIDTH - LCD_WIDTH) // 2
+    LCD_Y = 320
+    LCD_PADDING = 10
+
+    SEGMENT_WIDTH_LARGE = 25
+    SEGMENT_HEIGHT_LARGE = 45
+    SEGMENT_THICKNESS_LARGE = 6
+    
+    SEGMENT_WIDTH_SMALL = 15
+    SEGMENT_HEIGHT_SMALL = 25
+    SEGMENT_THICKNESS_SMALL = 4
+
+    FONT_LCD_LABEL = ("Consolas", 10, "bold")
+    FONT_LCD_SMALL = ("Consolas", 8, "bold")
+    FONT_MODE = ("Consolas", 12, "bold")
+
+    # --- Mode Names ---
+    MODE_CLOCK = "HORA"
+    MODE_ALARM = "ALARMA"
+    MODE_STOPWATCH = "CRONO"
+    MODE_TIMER = "TIMER"

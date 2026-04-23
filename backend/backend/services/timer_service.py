@@ -2,7 +2,7 @@
 Servicio de Temporizador - Gestiona la cuenta regresiva.
 """
 
-from ..models.timer import Timer
+from models.timer import Timer
 
 
 class TimerService:

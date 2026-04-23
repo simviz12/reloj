@@ -2,7 +2,7 @@
 Servicio del Reloj - Orquesta la lógica principal del reloj.
 """
 
-from ..models.clock import Clock
+from models.clock import Clock
 
 
 class ClockService:

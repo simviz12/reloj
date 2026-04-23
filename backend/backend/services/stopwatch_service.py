@@ -2,7 +2,7 @@
 Servicio de Cronómetro - Gestiona las operaciones del cronómetro.
 """
 
-from ..models.stopwatch import Stopwatch
+from models.stopwatch import Stopwatch
 
 
 class StopwatchService:

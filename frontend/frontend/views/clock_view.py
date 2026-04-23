@@ -18,16 +18,6 @@ class ClockView:
         """Obtiene la hora actual y actualiza las manecillas."""
         data = self._service.get_current_time()
 
-        # Actualizar ventana de fecha
-        self._display.draw_date_window(data["day"])
-
-        # Actualizar sub-dial con el día de la semana
-        # (Nota: En un diseño real, esto movería una manecilla)
-        cx = CasioTheme.WINDOW_WIDTH // 2
-        cy = CasioTheme.WINDOW_HEIGHT // 2
-        r = CasioTheme.DIAL_SIZE // 2
-        self._display.draw_subdial(cx - r // 2, cy, 35, data.get("day_of_week", "MI"))
-
         # Actualizar manecillas
         self._display.draw_hands(
             data["hours"],

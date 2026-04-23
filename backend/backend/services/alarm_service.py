@@ -2,7 +2,7 @@
 Servicio de Alarma - Gestiona las operaciones de alarma.
 """
 
-from ..models.alarm import Alarm
+from models.alarm import Alarm
 
 
 class AlarmService:
